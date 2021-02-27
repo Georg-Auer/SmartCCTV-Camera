@@ -164,17 +164,22 @@ body {
         <div class="camera-movement">
               <a href=# id=left>
               <button>                   
-                    <i class="fa fa-chevron-left fa-2x" style="color: white" aria-hidden="true"></i>
+                    <i class="fa fa-shield fa-2x" style="color: white" aria-hidden="true"></i>
               </button>
             </a>
             <a href=# id=center>
               <button>                   
-                    <i class="fa fa-dot-circle-o fa-2x" style="color: white" aria-hidden="true"></i>
+                    <i class="fa fa-shield fa-rotate-90 fa-2x" style="color: white" aria-hidden="true"></i>
               </button>
             </a>
             <a href=# id=right>
               <button>                  
-                    <i class="fa fa-chevron-right fa-2x" style="color: white" aria-hidden="true" ></i>
+                    <i class="fa fa-shield fa-rotate-180 fa-2x" style="color: white" aria-hidden="true" ></i>
+              </button>
+            </a>
+            <a href=# id=fourth>
+              <button>                  
+                    <i class="fa fa-shield fa-rotate-270 fa-2x" style="color: white" aria-hidden="true" ></i>
               </button>
             </a>
         </div>
@@ -209,6 +214,15 @@ body {
         // - Motor - right
         $('a#right').bind('click', function() {
             $.getJSON('/right',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        
+                // - Motor - fourth
+                $('a#fourth').bind('click', function() {
+            $.getJSON('/fourth',
                 function(data) {
               //do nothing
             });

@@ -5,6 +5,7 @@ from pySerialTransfer import pySerialTransfer as txfer
 # connection will not work with pySerialTransfer==2.0
 # requirement: pip install pyserial (works with 3.4 and most likely newer but not much older versions)
 # on teensy: include "SerialTransfer.h" Version 2.0
+# updated: now works with current SerialTransfer.h, and pySerialTransfer (27.02.2021)
     
 def connect_to_arduino(comport,motor0_enable,motor0_direction,motor0_position,
         motor1_enable,motor1_direction,motor1_position,motor2_enable,motor2_direction,motor2_position,motor3_enable,motor3_direction,motor3_position):

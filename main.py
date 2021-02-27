@@ -48,11 +48,13 @@ def right():
     print(f"Received values: {results}")
     return ("nothing")
 
-# @app.route('/270°turn')
-    # results = np.array(connect_to_arduino(comport,motor0_enable,motor0_direction,3200,
-    #     motor1_enable,motor1_direction,motor1_position,motor2_enable,motor2_direction,motor2_position,motor3_enable,motor3_direction,motor3_position))
-    # print(f"Received values: {results}")
-    # return ("nothing")
+@app.route('/fourth')
+def fourth():
+    print("Fourth")
+    results = np.array(connect_to_arduino(comport,motor0_enable,motor0_direction,4800,
+        motor1_enable,motor1_direction,motor1_position,motor2_enable,motor2_direction,motor2_position,motor3_enable,motor3_direction,motor3_position))
+    print(f"Received values: {results}")
+    return ("nothing")
 
 @app.route('/', methods=['GET', 'POST'])
 def move():
