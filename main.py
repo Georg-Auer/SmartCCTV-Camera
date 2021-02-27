@@ -3,29 +3,56 @@ from flask import Flask, render_template, Response, request
 from camera import VideoCamera
 import time
 import os
+from pyserial_connection_arduino import connect_to_arduino, list_available_ports
+import numpy as np
 
 app = Flask(__name__)
 #app = Flask(__name__, template_folder='/var/www/html/templates')
+
+comport = 'COM3'
+motor0_enable = 0
+motor0_direction = 0
+motor0_position = 0
+motor1_enable = 0
+motor1_direction = 0
+motor1_position = 0
+motor2_enable = 0
+motor2_direction = 0
+motor2_position = 0
+motor3_enable = 0
+motor3_direction = 0
+motor3_position = 0
 
 #background process happening without any refreshing
 @app.route('/left')
 def left():
     print ("Left")
-    os.system("python servo.py 1 2 0.1 1")       
+    results = np.array(connect_to_arduino(comport,motor0_enable,motor0_direction,0,
+        motor1_enable,motor1_direction,motor1_position,motor2_enable,motor2_direction,motor2_position,motor3_enable,motor3_direction,motor3_position))
+    print(f"Received values: {results}")
     return ("nothing")
 
 @app.route('/center')
 def center():
     print ("Center")
-    os.system("python servo.py 89 90 0.3 1")       
+    results = np.array(connect_to_arduino(comport,motor0_enable,motor0_direction,1600,
+        motor1_enable,motor1_direction,motor1_position,motor2_enable,motor2_direction,motor2_position,motor3_enable,motor3_direction,motor3_position))
+    print(f"Received values: {results}")
     return ("nothing")
 
 @app.route('/right')
 def right():
     print ("Right")
-    os.system("python servo.py 179 180 0.1 1")       
+    results = np.array(connect_to_arduino(comport,motor0_enable,motor0_direction,3200,
+        motor1_enable,motor1_direction,motor1_position,motor2_enable,motor2_direction,motor2_position,motor3_enable,motor3_direction,motor3_position))
+    print(f"Received values: {results}")
     return ("nothing")
 
+# @app.route('/270°turn')
+    # results = np.array(connect_to_arduino(comport,motor0_enable,motor0_direction,3200,
+    #     motor1_enable,motor1_direction,motor1_position,motor2_enable,motor2_direction,motor2_position,motor3_enable,motor3_direction,motor3_position))
+    # print(f"Received values: {results}")
+    # return ("nothing")
 
 @app.route('/', methods=['GET', 'POST'])
 def move():
