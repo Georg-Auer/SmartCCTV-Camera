@@ -8,10 +8,23 @@ import numpy as np
 
 # how to schedule
 # https://stackoverflow.com/questions/21214270/how-to-schedule-a-function-to-run-every-hour-on-flask
-from apscheduler.schedulers.background import BackgroundScheduler
+# from apscheduler.schedulers.background import BackgroundScheduler
+
+from flask_apscheduler import APScheduler
+# set configuration values
+class Config(object):
+    SCHEDULER_API_ENABLED = True
 
 app = Flask(__name__)
 #app = Flask(__name__, template_folder='/var/www/html/templates')
+
+app.config.from_object(Config())
+# initialize scheduler
+scheduler = APScheduler()
+# if you don't wanna use a config, you can set options here:
+# scheduler.api_enabled = True
+scheduler.init_app(app)
+scheduler.start()
 
 comport = 'COM3'
 motor0_enable = 0
@@ -65,8 +78,11 @@ def fourth():
 # https://fontawesome.com/v4.7.0/examples/
 
 # @app.route('/automatic')
+#def automatic():
+
+@scheduler.task('interval', id='automatic_pictures', seconds=60, misfire_grace_time=900)
 def automatic():
-    print("automatic")
+    print("automatic_pictures schedule executed")
 
     # results = np.array(connect_to_arduino(comport,motor0_enable,motor0_direction,0,
     #     motor1_enable,motor1_direction,motor1_position,motor2_enable,motor2_direction,motor2_position,motor3_enable,motor3_direction,motor3_position))
@@ -84,24 +100,32 @@ def automatic():
     # return ("nothing")
 
     # return the same thing as /video_feed
+    print("maybe this fails?")
     return Response(gen(VideoCamera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+# is this the best way to make a scheduler pause after job is created?
+scheduler.pause()
 
 # def sensor():
 #     """ Function for test purposes. """
 #     print("Scheduler is alive!")
 
 # scheduler options
-sched = BackgroundScheduler(daemon=True)
-sched.add_job(automatic,'interval',minutes=1)
+# sched = BackgroundScheduler(daemon=True)
+# sched.add_job(automatic,'interval',minutes=1)
+
+
 
 @app.route('/automatic_start')
 def automatic_start():
-    sched.start()
+    scheduler.resume()
+    return ("nothing")
 
 @app.route('/automatic_stop')
 def automatic_stop():
-    sched.shutdown()
+    scheduler.pause()
+    return ("nothing")
 
 def take_image(camera):
     # frame = gen_frame(VideoCamera())
