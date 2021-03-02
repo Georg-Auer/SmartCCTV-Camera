@@ -1,6 +1,5 @@
-#Modified by smartbuilds.io
-#Date: 27.09.20
-#Desc: This scrtipt script..
+#Modified by Georg Auer
+#Desc: Camera import for Flask
 
 import cv2
 try:
@@ -42,3 +41,23 @@ class VideoCamera(object):
 
         #ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
+
+    def take_image(self):
+        try:
+            ret, frame = self.vs.read()
+            # for printing path where image was saved
+            import pathlib
+            print(pathlib.Path().absolute())
+
+            filename = "test.jpg"
+            cv2.imwrite(filename, frame)
+            print(f"image taken and saved as {filename} in {pathlib.Path().absolute()}")
+            # self.vs.stop()
+
+
+            # self.vs = PiVideoStream().start()
+        except:
+            print("take_image did not work")
+
+        #ret, jpeg = cv2.imencode('.jpg', frame)
+        return frame

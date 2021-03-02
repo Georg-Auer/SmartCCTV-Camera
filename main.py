@@ -6,6 +6,10 @@ import os
 from pyserial_connection_arduino import connect_to_arduino, list_available_ports
 import numpy as np
 
+# how to schedule
+# https://stackoverflow.com/questions/21214270/how-to-schedule-a-function-to-run-every-hour-on-flask
+from apscheduler.schedulers.background import BackgroundScheduler
+
 app = Flask(__name__)
 #app = Flask(__name__, template_folder='/var/www/html/templates')
 
@@ -56,6 +60,64 @@ def fourth():
     print(f"Received values: {results}")
     return ("nothing")
 
+
+# not yet implemented
+# https://fontawesome.com/v4.7.0/examples/
+
+# @app.route('/automatic')
+def automatic():
+    print("automatic")
+
+    # results = np.array(connect_to_arduino(comport,motor0_enable,motor0_direction,0,
+    #     motor1_enable,motor1_direction,motor1_position,motor2_enable,motor2_direction,motor2_position,motor3_enable,motor3_direction,motor3_position))
+    take_image(VideoCamera())
+    # results = np.array(connect_to_arduino(comport,motor0_enable,motor0_direction,1600,
+    #     motor1_enable,motor1_direction,motor1_position,motor2_enable,motor2_direction,motor2_position,motor3_enable,motor3_direction,motor3_position))
+
+    # results = np.array(connect_to_arduino(comport,motor0_enable,motor0_direction,3200,
+    #     motor1_enable,motor1_direction,motor1_position,motor2_enable,motor2_direction,motor2_position,motor3_enable,motor3_direction,motor3_position))
+
+    # results = np.array(connect_to_arduino(comport,motor0_enable,motor0_direction,4800,
+        # motor1_enable,motor1_direction,motor1_position,motor2_enable,motor2_direction,motor2_position,motor3_enable,motor3_direction,motor3_position))
+
+
+    # return ("nothing")
+
+    # return the same thing as /video_feed
+    return Response(gen(VideoCamera()),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
+# def sensor():
+#     """ Function for test purposes. """
+#     print("Scheduler is alive!")
+
+# scheduler options
+sched = BackgroundScheduler(daemon=True)
+sched.add_job(automatic,'interval',minutes=1)
+
+@app.route('/automatic_start')
+def automatic_start():
+    sched.start()
+
+@app.route('/automatic_stop')
+def automatic_stop():
+    sched.shutdown()
+
+def take_image(camera):
+    # frame = gen_frame(VideoCamera())
+    # img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    # img = np.array(frame)
+    # import cv2
+    frame = camera.take_image()
+    # filename = "test.jpg"
+    # cv2.imwrite(filename, frame)
+    return frame
+
+# @app.route('/settings')
+# def automatic():
+#     print("settings")
+#     return ("nothing")
+
 @app.route('/', methods=['GET', 'POST'])
 def move():
     result = ""
@@ -69,8 +131,14 @@ def move():
 def gen(camera):
     while True:
         frame = camera.get_frame()
+        # this is executed every frame
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+def gen_frame(camera):
+    frame = camera.get_frame()
+    # not sure when this is needed??
+    return frame
 
 @app.route('/video_feed')
 def video_feed():
