@@ -46,18 +46,11 @@ class VideoCamera(object):
         try:
             ret, frame = self.vs.read()
             # for printing path where image was saved
-            import pathlib
-            print(pathlib.Path().absolute())
-
-            filename = "test.jpg"
-            cv2.imwrite(filename, frame)
-            print(f"image taken and saved as {filename} in {pathlib.Path().absolute()}")
             # self.vs.stop()
-
 
             # self.vs = PiVideoStream().start()
         except:
             print("take_image did not work")
 
-        #ret, jpeg = cv2.imencode('.jpg', frame)
-        return frame
+        ret, jpeg = cv2.imencode('.jpg', frame)
+        return frame, jpeg

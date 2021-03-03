@@ -162,22 +162,22 @@ body {
     <form method = "post">
             
         <div class="camera-movement">
-              <a href=# id=left>
+              <a href=# id=href_0>
               <button>                   
                     <i class="fa fa-shield fa-2x" style="color: white" aria-hidden="true"></i>
               </button>
             </a>
-            <a href=# id=center>
+            <a href=# id=href_90>
               <button>                   
                     <i class="fa fa-shield fa-rotate-90 fa-2x" style="color: white" aria-hidden="true"></i>
               </button>
             </a>
-            <a href=# id=right>
+            <a href=# id=href_180>
               <button>                  
                     <i class="fa fa-shield fa-rotate-180 fa-2x" style="color: white" aria-hidden="true" ></i>
               </button>
             </a>
-            <a href=# id=fourth>
+            <a href=# id=href_270>
               <button>                  
                     <i class="fa fa-shield fa-rotate-270 fa-2x" style="color: white" aria-hidden="true" ></i>
               </button>
@@ -203,36 +203,37 @@ body {
 <script type=text/javascript>
         $(function() {
           
-          //json - parse to Python - left
-          $('a#left').bind('click', function() {
-            $.getJSON('/left',
+          //json - parse to Python
+          // Motor - 90°
+          $('a#href_0').bind('click', function() {
+            $.getJSON('/deg_0',
                 function(data) {
               //do nothing
             });
             return false;
           });
           
-          // - Motor - center
-          $('a#center').bind('click', function() {
-            $.getJSON('/center',
+          // - Motor - 90°
+          $('a#href_90').bind('click', function() {
+            $.getJSON('/deg_90',
                 function(data) {
               //do nothing
             });
             return false;
           });
         
-          // - Motor - right
-          $('a#right').bind('click', function() {
-            $.getJSON('/right',
+          // - Motor - 180°
+          $('a#href_180').bind('click', function() {
+            $.getJSON('/deg_180',
                 function(data) {
               //do nothing
             });
             return false;
           });
         
-          // - Motor - fourth
-          $('a#fourth').bind('click', function() {
-            $.getJSON('/fourth',
+          // - Motor - 270°
+          $('a#href_270').bind('click', function() {
+            $.getJSON('/deg_270',
                 function(data) {
               //do nothing
             });
