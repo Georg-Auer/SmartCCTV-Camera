@@ -112,14 +112,16 @@ def send_motor_values(sender, callback):
         core.set_value(f"received value motor {nr_of_motor}", rcvd_value)
         nr_of_motor += 1
 
-def adjust_comport(sender, callback):
-    print(core.get_value("comport##inputtext"))
+# def adjust_comport(sender, callback):
+#     print(core.get_value("comport##inputtext"))
     # for some reason, this does not work:
     # comport = get_value("comport##inputtext")
 
 def find_comports(sender, callback):
     #print(list_available_ports())
-    core.set_value("Click button for new search", list_available_ports())
+    comport_list = list_available_ports()
+    core.set_value("Click button for new search", comport_list)
+    core.set_value("comport##inputtext", comport_list[0])
 
 with simple.window("Motor Window"):
 
@@ -131,7 +133,7 @@ with simple.window("Motor Window"):
     core.set_value("Click button for new search", "No values where received yet")
 
     core.add_text("Please choose the COM Port where the microcontroller is connected:")
-    core.add_input_text("comport##inputtext", hint="enter port, e.g. COM0", callback=adjust_comport)
+    core.add_input_text("comport##inputtext", hint="enter port, e.g. COM0")
     # text input fields for all motors are created
     # for each value there is a button to send the entered value to the motor
     core.add_text("Please choose position for any/all motors:")
