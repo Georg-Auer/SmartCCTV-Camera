@@ -87,6 +87,12 @@ def send_motor_values(sender, callback):
         try:
             print(f"Printing value of motor {element}")
             print(core.get_value(f"motor {element}##inputtext"))
+            # set comport to first found comport
+            print(core.get_value(0))
+            try:
+                core.set_value("comport##inputtext") = core.get_value(0)
+            except:
+                print("Please set comport manually")
             value_list_to_send.append(int(core.get_value(f"motor {element}##inputtext")))
         except ValueError:
             value_list_to_send.append(0)
