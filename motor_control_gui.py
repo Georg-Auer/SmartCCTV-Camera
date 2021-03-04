@@ -3,7 +3,7 @@ from pyserial_connection_arduino import connect_to_arduino, list_available_ports
 import numpy as np
 
 # for saving variables
-comport = 'COM17'
+comport = '/dev/ttyACM0'
 motor0_enable = 0
 motor0_direction = 0
 motor0_position = 0
