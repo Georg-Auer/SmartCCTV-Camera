@@ -46,9 +46,12 @@ def motor_position(position_in_degree):
     # degrees are divided by 90 and multiplied by 1600
     # only send int values to arduino!
     step_position_arduino = int(position_in_degree/90*1600)
-    results = np.array(connect_to_arduino(comport,motor0_enable,motor0_direction,step_position_arduino,
-        motor1_enable,motor1_direction,motor1_position,motor2_enable,motor2_direction,motor2_position,motor3_enable,motor3_direction,motor3_position))
-    print(f"Received values: {results}")
+    try:
+        results = np.array(connect_to_arduino(comport,motor0_enable,motor0_direction,step_position_arduino,
+            motor1_enable,motor1_direction,motor1_position,motor2_enable,motor2_direction,motor2_position,motor3_enable,motor3_direction,motor3_position))
+        print(f"Received values: {results}")
+    except:
+        print("Microcontroller not found or not connected")
 
 @app.route('/deg_0')
 def deg_0():
@@ -81,59 +84,52 @@ def deg_270():
 #def automatic():
 
 # @scheduler.task('interval', id='automatic_pictures', seconds=60, misfire_grace_time=900)
-# def automatic():
-#     print("automatic_pictures schedule executed")
-
-#     frame, jpeg = take_image(VideoCamera())
-
-#     import pathlib
-#     import cv2
-#     print(pathlib.Path().absolute())
-
-#     filename = "test.jpg"
-#     cv2.imwrite(filename, frame)
-
-#     # ret, jpeg = cv2.imencode('.jpg', frame)
-#     # img = cv2.imdecode(jpeg, cv2.IMREAD_COLOR)
-#     # filename = "test2.jpg"
-#     # cv2.imwrite(filename, img)
-#     print(f"image taken and saved as {filename} in {pathlib.Path().absolute()}")
-#     print("Round completed")
-#     return ("nothing")
 
 @app.route('/automatic_start')
 def run_tasks():
-    for i in range(0, 360, 90):
+    for i in range(0, 180, 90):
         app.apscheduler.add_job(func=scheduled_task, trigger='date', args=[i], id='j'+str(i))
-
-        time.sleep(5)
+        time.sleep(10)
+        # app.apscheduler.add_job(func=scheduled_task, seconds=30, misfire_grace_time=900, args=[i], id='j'+str(i))
+        # time.sleep(10)
         # time.sleep(15)
+        # send motor values
+        # wait for motor values ??????????
+        # time.sleep(18)
+        # take picture
+
  
     return 'Scheduled several long running tasks.', 200
  
 def scheduled_task(task_id):
     task_iterations = 2
     for i in range(task_iterations):
-
-        # time.sleep(60)
+        print("start of task")
+        # send motor to position in degree
+        motor_position(task_id)
         run_every_something_seconds = 20
         time.sleep(run_every_something_seconds)
         print(f'Task {task_id} running iteration {i}')
-        # send motor to position
-        motor_position(task_id)
 
         # WAIT!!!!!!!!!!
         # take image
         import cv2
         filename = f"Position{task_id}_Cycle{i}.jpg"
         print(filename)
-        frame = take_image(VideoCamera())
+        # frame = take_image(VideoCamera())
+        # this used the created global object
+        frame = gen_frame(global_video_cam)
+
         cv2.imwrite(filename, frame)
+        print("end of task")
+
 
 @app.route('/automatic_stop')
 def automatic_stop():
+    # https://github.com/viniciuschiele/flask-apscheduler
     # scheduler.pause()
     print("Removing all jobs")
+    # scheduler.remove_job(j0)
     scheduler.remove_all_jobs()
     # job names:
     # j0
@@ -143,16 +139,6 @@ def automatic_stop():
     return ("nothing")
     # this does nothing right now
 
-# additional ented method for auto taking pictures
-def take_image(camera):
-    # frame = gen_frame(VideoCamera())
-    # img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    # img = np.array(frame)
-    # import cv2
-    frame, jpeg = camera.take_image()
-    # filename = "test.jpg"
-    # cv2.imwrite(filename, frame)
-    return frame
 
 # @app.route('/settings')
 # def automatic():
@@ -171,19 +157,22 @@ def move():
 
 def gen(camera):
     while True:
-        frame = camera.get_frame()
+        frame, frame2 = camera.get_frame()
         # this is executed every frame
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 def gen_frame(camera):
-    frame = camera.get_frame()
+    frame, frame2 = camera.get_frame()
+    # frame 2 is an image, frame is a jpeg stream in bytes
     # not sure when this is needed??
-    return frame
+    return frame2
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(gen(VideoCamera()),
+    global global_video_cam
+    global_video_cam = VideoCamera()
+    return Response(gen(global_video_cam),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
