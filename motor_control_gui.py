@@ -3,7 +3,7 @@ from pyserial_connection_arduino import connect_to_arduino, list_available_ports
 import numpy as np
 
 # for saving variables
-comport = 'COM17'
+comport = '/dev/ttyACM0'
 motor0_enable = 0
 motor0_direction = 0
 motor0_position = 0
@@ -87,6 +87,12 @@ def send_motor_values(sender, callback):
         try:
             print(f"Printing value of motor {element}")
             print(core.get_value(f"motor {element}##inputtext"))
+            # set comport to first found comport
+            print(core.get_value(f"motor {0}##inputtext"))
+            try:
+                core.set_value("comport##inputtext", core.get_value(f"motor {0}##inputtext"))
+            except:
+                print("Please set comport manually")
             value_list_to_send.append(int(core.get_value(f"motor {element}##inputtext")))
         except ValueError:
             value_list_to_send.append(0)
