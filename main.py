@@ -7,7 +7,7 @@ from pyserial_connection_arduino import connect_to_arduino, list_available_ports
 import numpy as np
 # icons from:
 # https://fontawesome.com/v4.7.0/examples/
-# how to schedule
+# how to schedule:
 # https://stackoverflow.com/questions/21214270/how-to-schedule-a-function-to-run-every-hour-on-flask
 # from apscheduler.schedulers.background import BackgroundScheduler
 # how to handle querys:
