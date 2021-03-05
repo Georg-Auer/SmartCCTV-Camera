@@ -1,20 +1,20 @@
-
+# SPOC lab CAM²: hetcam-webcam
+# icons from:
+# https://fontawesome.com/v4.7.0/examples/
+# how to schedule:
+# https://stackoverflow.com/questions/21214270/how-to-schedule-a-function-to-run-every-hour-on-flask
+# https://apscheduler.readthedocs.io/en/stable/modules/triggers/date.html#module-apscheduler.triggers.date
+# alternatively to flask_apscheduler: from apscheduler.schedulers.background import BackgroundScheduler
+# how to handle querys:
+# https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
 from flask import Flask, render_template, Response, request
 from camera import VideoCamera
 import time
 import os
 from pyserial_connection_arduino import connect_to_arduino, list_available_ports
 import numpy as np
-# icons from:
-# https://fontawesome.com/v4.7.0/examples/
-# how to schedule:
-# https://stackoverflow.com/questions/21214270/how-to-schedule-a-function-to-run-every-hour-on-flask
-# from apscheduler.schedulers.background import BackgroundScheduler
-# how to handle querys:
-# https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
 from flask_apscheduler import APScheduler
 import cv2
-# set configuration values
 class Config(object):
     SCHEDULER_API_ENABLED = True
 
@@ -22,7 +22,7 @@ app = Flask(__name__)
 #app = Flask(__name__, template_folder='/var/www/html/templates')
 
 app.config.from_object(Config())
-# initialize scheduler
+
 scheduler = APScheduler()
 # if you don't wanna use a config, you can set options here:
 # scheduler.api_enabled = True
@@ -124,10 +124,10 @@ def automatic_stop():
     print(scheduler.get_jobs())
     return ("nothing")
 
-# @app.route('/settings')
-# def automatic():
-#     print("settings")
-#     return ("nothing")
+@app.route('/settings')
+def automatic():
+    print("settings")
+    return ("nothing")
 
 @app.route('/', methods=['GET', 'POST'])
 def move():

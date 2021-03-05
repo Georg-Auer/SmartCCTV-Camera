@@ -51,7 +51,7 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.lights-button{
+.settings-button{
 	float: right;
 }
 
@@ -146,7 +146,7 @@ body {
          </a>       
     </div>
 
-    <div class="lights-button">
+    <div class="settings">
               
             <a href=# id=center>
               <button>                   
@@ -195,65 +195,74 @@ body {
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type=text/javascript>
-        $(function() {
-          
-          //json - parse to Python
-          // Motor - 90°
-          $('a#href_0').bind('click', function() {
-            $.getJSON('/move_deg?degree=0',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-          
-          // - Motor - 90°
-          $('a#href_90').bind('click', function() {
-            $.getJSON('/move_deg?degree=90',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-        
-          // - Motor - 180°
-          $('a#href_180').bind('click', function() {
-            $.getJSON('/move_deg?degree=180',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-        
-          // - Motor - 270°
-          $('a#href_270').bind('click', function() {
-            $.getJSON('/move_deg?degree=270',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
+  $(function() {
+    
+    //json - parse to Python
+    // Motor - 90°
+    $('a#href_0').bind('click', function() {
+      $.getJSON('/move_deg?degree=0',
+          function(data) {
+        //do nothing
+      });
+      return false;
+    });
+    
+    // - Motor - 90°
+    $('a#href_90').bind('click', function() {
+      $.getJSON('/move_deg?degree=90',
+          function(data) {
+        //do nothing
+      });
+      return false;
+    });
+  
+    // - Motor - 180°
+    $('a#href_180').bind('click', function() {
+      $.getJSON('/move_deg?degree=180',
+          function(data) {
+        //do nothing
+      });
+      return false;
+    });
+  
+    // - Motor - 270°
+    $('a#href_270').bind('click', function() {
+      $.getJSON('/move_deg?degree=270',
+          function(data) {
+        //do nothing
+      });
+      return false;
+    });
 
-          // - automatic start
-          $('a#automatic_start').bind('click', function() {
-            $.getJSON('/automatic_start',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
+    // - automatic start
+    $('a#automatic_start').bind('click', function() {
+      $.getJSON('/automatic_start',
+          function(data) {
+        //do nothing
+      });
+      return false;
+    });
 
-          // - automatic stop
-          $('a#automatic_stop').bind('click', function() {
-            $.getJSON('/automatic_stop',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-          
-        
-        });    
+    // - automatic stop
+    $('a#automatic_stop').bind('click', function() {
+      $.getJSON('/automatic_stop',
+          function(data) {
+        //do nothing
+      });
+      return false;
+    });
+
+    // - settings
+    $('a#settings').bind('click', function() {
+      $.getJSON('/settings',
+          function(data) {
+        //do nothing
+      });
+      return false;
+    });
+    
+  
+  });    
 </script>
 
 <script type="text/javascript">
