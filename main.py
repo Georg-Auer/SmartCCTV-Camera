@@ -28,7 +28,7 @@ scheduler = APScheduler()
 scheduler.init_app(app)
 scheduler.start()
 
-comport = 'COM6'
+comport = '/dev/ttyACM0' # this should be set to the standard address of the microcontroller
 motor0_enable = 0
 motor0_direction = 0
 motor0_position = 0
