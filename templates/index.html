@@ -3,6 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+/* https://fontawesome.com/v4.7.0/cheatsheet/ */
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
@@ -41,7 +42,6 @@ body {
   padding: 16px;
   margin-bottom: 30px;
 }
-
 
 .camera-movement{ 
   float: none;
@@ -93,12 +93,10 @@ button {
     /* Full height */
   height: 100%;
 
-
   /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-
 }
 
 .top-right-logo {
@@ -119,7 +117,6 @@ body {
     background-color: black;
 }
 
-
 </style>
 </head>
 
@@ -135,17 +132,16 @@ body {
      
 </div>
 
-  <div class="top-right-logo">
-  	<a>Smart CAM² - SPOC lab</a>
-  </div>
-
+<div class="top-right-logo">
+  <a>Smart CAM² - SPOC lab</a>
+</div>
 
 <div class="navbar">
 
     <div class="ignoreCall">
           <a id=decline class="but_def">
               <button id="button"> 
-                  <i style="background: red; color: white;" class="fa fa-times fa-2x" aria-hidden="true"></i>
+                  <i style="background: red; color: white;" class="fa fa-times fa" aria-hidden="true"></i>
               </button>
          </a>       
     </div>
@@ -154,7 +150,7 @@ body {
               
             <a href=# id=center>
               <button>                   
-                    <i class="fa fa-lightbulb-o fa-2x" style="color: white" aria-hidden="true"></i>
+                    <i class="fa fa-gears fa" style="color: white" aria-hidden="true"></i>
               </button>
             </a>
     </div>
@@ -164,32 +160,32 @@ body {
         <div class="camera-movement">
               <a href=# id=href_0>
               <button>                   
-                    <i class="fa fa-shield fa-2x" style="color: white" aria-hidden="true"></i>
+                    <i class="fa fa-shield fa" style="color: white" aria-hidden="true"></i>
               </button>
             </a>
             <a href=# id=href_90>
               <button>                   
-                    <i class="fa fa-shield fa-rotate-90 fa-2x" style="color: white" aria-hidden="true"></i>
+                    <i class="fa fa-shield fa-rotate-90 fa" style="color: white" aria-hidden="true"></i>
               </button>
             </a>
             <a href=# id=href_180>
               <button>                  
-                    <i class="fa fa-shield fa-rotate-180 fa-2x" style="color: white" aria-hidden="true" ></i>
+                    <i class="fa fa-shield fa-rotate-180 fa" style="color: white" aria-hidden="true" ></i>
               </button>
             </a>
             <a href=# id=href_270>
               <button>                  
-                    <i class="fa fa-shield fa-rotate-270 fa-2x" style="color: white" aria-hidden="true" ></i>
+                    <i class="fa fa-shield fa-rotate-270 fa" style="color: white" aria-hidden="true" ></i>
               </button>
             </a>
             <a href=# id=automatic_start>
               <button>                  
-                    <i class="fa fa-camera-retro fa-2x" style="color: rgb(28, 228, 28)" aria-hidden="true" ></i>
+                    <i class=" fa-hand-spock-o fa" style="color: rgb(25, 187, 25)" aria-hidden="true" ></i>
               </button>
             </a>
             <a href=# id=automatic_stop>
               <button>                  
-                    <i class="fa fa-camera-retro fa-2x" style="color: rgb(163, 14, 14)" aria-hidden="true" ></i>
+                    <i class=" fa-hand-spock-o fa" style="color: rgb(207, 41, 41)" aria-hidden="true" ></i>
               </button>
             </a>
         </div>
@@ -197,8 +193,6 @@ body {
 
 </div>
 
-
-    
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type=text/javascript>
         $(function() {
@@ -206,7 +200,7 @@ body {
           //json - parse to Python
           // Motor - 90°
           $('a#href_0').bind('click', function() {
-            $.getJSON('/deg_0',
+            $.getJSON('/move_deg?degree=0',
                 function(data) {
               //do nothing
             });
@@ -215,7 +209,7 @@ body {
           
           // - Motor - 90°
           $('a#href_90').bind('click', function() {
-            $.getJSON('/deg_90',
+            $.getJSON('/move_deg?degree=90',
                 function(data) {
               //do nothing
             });
@@ -224,7 +218,7 @@ body {
         
           // - Motor - 180°
           $('a#href_180').bind('click', function() {
-            $.getJSON('/deg_180',
+            $.getJSON('/move_deg?degree=180',
                 function(data) {
               //do nothing
             });
@@ -233,7 +227,7 @@ body {
         
           // - Motor - 270°
           $('a#href_270').bind('click', function() {
-            $.getJSON('/deg_270',
+            $.getJSON('/move_deg?degree=270',
                 function(data) {
               //do nothing
             });

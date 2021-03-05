@@ -9,7 +9,8 @@ import numpy as np
 # how to schedule
 # https://stackoverflow.com/questions/21214270/how-to-schedule-a-function-to-run-every-hour-on-flask
 # from apscheduler.schedulers.background import BackgroundScheduler
-
+# how to handle querys:
+# https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
 from flask_apscheduler import APScheduler
 # set configuration values
 class Config(object):
@@ -53,29 +54,16 @@ def motor_position(position_in_degree):
     except:
         print("Microcontroller not found or not connected")
 
-@app.route('/deg_0')
-def deg_0():
-    print ("Moving to 0°")
-    motor_position(0)
-    return ("nothing")
-
-@app.route('/deg_90')
-def deg_90():
-    print ("Moving to 90°")
-    motor_position(90)
-    return ("nothing")
-
-@app.route('/deg_180')
-def deg_180():
-    print ("Moving to 180°")
-    motor_position(180)
-    return ("nothing")
-
-@app.route('/deg_270')
-def deg_270():
-    print("Moving to 270°")
-    motor_position(270)
-    return ("nothing")
+@app.route('/move_deg')
+def move_deg():
+    degree = 0
+    degree = int(request.args.get('degree'))
+    if(degree >= 280):
+        degree = 270
+    print(f"Moving to {degree}°")
+    motor_position(degree)
+    return '''<h1>Moving to: {}</h1>'''.format(degree)
+    # return ("nothing")
 
 # not yet implemented
 # https://fontawesome.com/v4.7.0/examples/
@@ -87,8 +75,11 @@ def deg_270():
 
 @app.route('/automatic_start')
 def run_tasks():
-    for i in range(0, 180, 90):
+    for i in range(0, 90, 90):
         app.apscheduler.add_job(func=scheduled_task, trigger='date', args=[i], id='j'+str(i))
+        print(f"created job {i}")
+        print(i)
+        # print(j)
         time.sleep(10)
         # app.apscheduler.add_job(func=scheduled_task, seconds=30, misfire_grace_time=900, args=[i], id='j'+str(i))
         # time.sleep(10)
@@ -98,7 +89,6 @@ def run_tasks():
         # time.sleep(18)
         # take picture
 
- 
     return 'Scheduled several long running tasks.', 200
  
 def scheduled_task(task_id):
@@ -123,7 +113,6 @@ def scheduled_task(task_id):
         cv2.imwrite(filename, frame)
         print("end of task")
 
-
 @app.route('/automatic_stop')
 def automatic_stop():
     # https://github.com/viniciuschiele/flask-apscheduler
@@ -139,7 +128,6 @@ def automatic_stop():
     return ("nothing")
     # this does nothing right now
 
-
 # @app.route('/settings')
 # def automatic():
 #     print("settings")
@@ -149,11 +137,8 @@ def automatic_stop():
 def move():
     result = ""
     if request.method == 'POST':
-        
         return render_template('index.html', res_str=result)
-                        
     return render_template('index.html')
-
 
 def gen(camera):
     while True:
@@ -165,7 +150,6 @@ def gen(camera):
 def gen_frame(camera):
     frame, frame2 = camera.get_frame()
     # frame 2 is an image, frame is a jpeg stream in bytes
-    # not sure when this is needed??
     return frame2
 
 @app.route('/video_feed')
