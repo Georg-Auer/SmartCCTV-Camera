@@ -12,6 +12,7 @@ import numpy as np
 # how to handle querys:
 # https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
 from flask_apscheduler import APScheduler
+import cv2
 # set configuration values
 class Config(object):
     SCHEDULER_API_ENABLED = True
@@ -53,6 +54,7 @@ def motor_position(position_in_degree):
         print(f"Received values: {results}")
     except:
         print("Microcontroller not found or not connected")
+        return
 
 @app.route('/move_deg')
 def move_deg():
@@ -72,61 +74,61 @@ def move_deg():
 #def automatic():
 
 # @scheduler.task('interval', id='automatic_pictures', seconds=60, misfire_grace_time=900)
+from datetime import datetime, timedelta
+# https://stackoverflow.com/questions/6871016/adding-days-to-a-date-in-python
 
 @app.route('/automatic_start')
 def run_tasks():
-    for i in range(0, 90, 90):
-        app.apscheduler.add_job(func=scheduled_task, trigger='date', args=[i], id='j'+str(i))
-        print(f"created job {i}")
-        print(i)
-        # print(j)
-        time.sleep(10)
-        # app.apscheduler.add_job(func=scheduled_task, seconds=30, misfire_grace_time=900, args=[i], id='j'+str(i))
-        # time.sleep(10)
-        # time.sleep(15)
-        # send motor values
-        # wait for motor values ??????????
-        # time.sleep(18)
-        # take picture
-
+    schedule_start = datetime.today()
+    print(f"starting scheduling {schedule_start}")
+    moving_time = 5
+    task_seperation_increase = moving_time*2
+    task_seperation = 1
+    for i in range(0, 360, 90):
+        schedule_time_movement = schedule_start + timedelta(seconds=task_seperation)
+        schedule_time_picture = schedule_start + timedelta(seconds=moving_time+task_seperation)
+        scheduler.add_job(func=motor_task_creator, trigger='date', run_date=schedule_time_movement, args=[i], id='move_start'+str(i))
+        print(f"created moving job {i} running at {schedule_time_movement}")
+        scheduler.add_job(func=picture_task_creator, trigger='date', run_date=schedule_time_picture, args=[i], id='picture_start'+str(i))
+        print(f"created picture job {i} running at {schedule_time_picture}")
+        task_seperation = task_seperation + task_seperation_increase
+    print(scheduler.get_jobs())
     return 'Scheduled several long running tasks.', 200
- 
-def scheduled_task(task_id):
-    task_iterations = 2
-    for i in range(task_iterations):
-        print("start of task")
-        # send motor to position in degree
-        motor_position(task_id)
-        run_every_something_seconds = 20
-        time.sleep(run_every_something_seconds)
-        print(f'Task {task_id} running iteration {i}')
 
-        # WAIT!!!!!!!!!!
-        # take image
-        import cv2
-        filename = f"Position{task_id}_Cycle{i}.jpg"
-        print(filename)
-        # frame = take_image(VideoCamera())
-        # this used the created global object
-        frame = gen_frame(global_video_cam)
+def motor_task_creator(task_id):
+    print(f"start of motor task creator {task_id}")
+    # creating motor task that runs every minute
+    scheduler.add_job(func=motor_task, trigger='interval', minutes=1, args=[task_id], id='move'+str(task_id))
 
-        cv2.imwrite(filename, frame)
-        print("end of task")
+def picture_task_creator(task_id):
+    print(f"start of picture task creator {task_id}")
+    # creating picture task that runs every minute
+    scheduler.add_job(func=picture_task, trigger='interval', minutes=1, args=[task_id], id='picture'+str(task_id))
+
+def motor_task(task_id):
+    # send to motor position
+    print(f"moving to position {task_id}")
+    motor_position(task_id)
+#-------------------------------------------------------------------------------------
+
+def picture_task(task_position):
+    print(f"start of picture task {task_position}")
+    filename = f'position{task_position}_{datetime.now().strftime("%Y%m%d-%H%M%S")}.jpg'
+    print(filename)
+    frame = gen_frame(global_video_cam)
+    # writing image
+    cv2.imwrite(filename, frame)
 
 @app.route('/automatic_stop')
 def automatic_stop():
     # https://github.com/viniciuschiele/flask-apscheduler
     # scheduler.pause()
+    print(scheduler.get_jobs())
     print("Removing all jobs")
     # scheduler.remove_job(j0)
     scheduler.remove_all_jobs()
-    # job names:
-    # j0
-    # j90
-    # j180
-    # j270
+    print(scheduler.get_jobs())
     return ("nothing")
-    # this does nothing right now
 
 # @app.route('/settings')
 # def automatic():
