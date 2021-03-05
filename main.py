@@ -5,7 +5,8 @@ import time
 import os
 from pyserial_connection_arduino import connect_to_arduino, list_available_ports
 import numpy as np
-
+# icons from:
+# https://fontawesome.com/v4.7.0/examples/
 # how to schedule
 # https://stackoverflow.com/questions/21214270/how-to-schedule-a-function-to-run-every-hour-on-flask
 # from apscheduler.schedulers.background import BackgroundScheduler
@@ -67,13 +68,6 @@ def move_deg():
     return '''<h1>Moving to: {}</h1>'''.format(degree)
     # return ("nothing")
 
-# not yet implemented
-# https://fontawesome.com/v4.7.0/examples/
-
-# @app.route('/automatic')
-#def automatic():
-
-# @scheduler.task('interval', id='automatic_pictures', seconds=60, misfire_grace_time=900)
 from datetime import datetime, timedelta
 # https://stackoverflow.com/questions/6871016/adding-days-to-a-date-in-python
 
