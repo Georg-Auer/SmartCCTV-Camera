@@ -52,14 +52,16 @@ class VideoCamera(object):
         return jpeg.tobytes(), frame
 
     def get_frame_resolution(self):
+        print(f"previously set resolution: {self.vs.resolution}")
         self.vs.resolution = (1280, 720)
+        print(f"previously set resolution: {self.vs.resolution}")
         try:
             frame = self.flip_if_needed(self.vs.read())
             ret, jpeg = cv2.imencode('.jpg', frame)
         except:
             ret, frame = self.vs.read()
             ret, jpeg = cv2.imencode('.jpg', frame)
-
+        self.vs.resolution = (1280, 720)
         # now returns a simple frame additionally
         return jpeg.tobytes(), frame
 
