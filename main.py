@@ -75,7 +75,7 @@ from datetime import datetime, timedelta
 def run_tasks():
     schedule_start = datetime.today()
     print(f"starting scheduling {schedule_start}")
-    moving_time = 5
+    moving_time = 10
     task_seperation_increase = moving_time*2
     task_seperation = 1
     for i in range(0, 270, 90): # starting angle, stop angle and step angle in degrees
@@ -92,12 +92,12 @@ def run_tasks():
 def motor_task_creator(task_id):
     print(f"start of motor task creator {task_id}")
     # creating motor task that runs every minute
-    scheduler.add_job(func=motor_task, trigger='interval', minutes=1, args=[task_id], id='move'+str(task_id))
+    scheduler.add_job(func=motor_task, trigger='interval', minutes=60, args=[task_id], id='move'+str(task_id))
 
 def picture_task_creator(task_id):
     print(f"start of picture task creator {task_id}")
     # creating picture task that runs every minute
-    scheduler.add_job(func=picture_task, trigger='interval', minutes=1, args=[task_id], id='picture'+str(task_id))
+    scheduler.add_job(func=picture_task, trigger='interval', minutes=60, args=[task_id], id='picture'+str(task_id))
 
 def motor_task(task_id):
     # send to motor position
