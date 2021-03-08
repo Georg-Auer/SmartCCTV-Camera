@@ -13,6 +13,7 @@ import numpy as np
 class VideoCamera(object):
     def __init__(self, flip = False):
         try:
+            # try raspberry camera first
             try:
                 self.vs = PiVideoStream(resolution=(640, 640)).start()
                 print("started with custom resolution")
@@ -22,7 +23,7 @@ class VideoCamera(object):
 
             #resolution=(320, 240)
         except:
-            # start webcam for testing
+            # start webcam for testing instead
             self.vs = cv2.VideoCapture(0, cv2.CAP_DSHOW)
             #0 is the standard number of the connected camera in windows
         self.flip = flip
@@ -50,21 +51,33 @@ class VideoCamera(object):
         # now returns a simple frame additionally
         return jpeg.tobytes(), frame
 
-    def take_image(self):
-        # stop cam before taking images
-        # try:
-        #     self.vs.stop()
-        # except:
-        #     self.vs.release()
-
+    def get_frame_resolution(self):
+        self.vs.resolution = (1280, 720)
         try:
-            ret, frame = self.vs.read()
-            # for printing path where image was saved
-            # self.vs.stop()
-
-            # self.vs = PiVideoStream().start()
+            frame = self.flip_if_needed(self.vs.read())
+            ret, jpeg = cv2.imencode('.jpg', frame)
         except:
-            print("take_image did not work")
+            ret, frame = self.vs.read()
+            ret, jpeg = cv2.imencode('.jpg', frame)
 
-        ret, jpeg = cv2.imencode('.jpg', frame)
-        return frame, jpeg
+        # now returns a simple frame additionally
+        return jpeg.tobytes(), frame
+
+    # def take_image(self):
+    #     # stop cam before taking images
+    #     # try:
+    #     #     self.vs.stop()
+    #     # except:
+    #     #     self.vs.release()
+
+    #     try:
+    #         ret, frame = self.vs.read()
+    #         # for printing path where image was saved
+    #         # self.vs.stop()
+
+    #         # self.vs = PiVideoStream().start()
+    #     except:
+    #         print("take_image did not work")
+
+    #     ret, jpeg = cv2.imencode('.jpg', frame)
+    #     return frame, jpeg

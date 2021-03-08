@@ -144,7 +144,10 @@ def gen(camera):
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 def gen_frame(camera):
-    frame, frame2 = camera.get_frame()
+    try:
+        frame, frame2 = camera.get_frame_resolution()
+    except:
+        frame, frame2 = camera.get_frame()
     # frame 2 is an image, frame is a jpeg stream in bytes
     return frame2
 
