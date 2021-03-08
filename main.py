@@ -78,7 +78,7 @@ def run_tasks():
     moving_time = 5
     task_seperation_increase = moving_time*2
     task_seperation = 1
-    for i in range(0, 360, 90):
+    for i in range(0, 270, 90): # starting angle, stop angle and step angle in degrees
         schedule_time_movement = schedule_start + timedelta(seconds=task_seperation)
         schedule_time_picture = schedule_start + timedelta(seconds=moving_time+task_seperation)
         scheduler.add_job(func=motor_task_creator, trigger='date', run_date=schedule_time_movement, args=[i], id='move_start'+str(i))
