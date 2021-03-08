@@ -146,8 +146,11 @@ def gen(camera):
 def gen_frame(camera):
     try:
         frame, frame2 = camera.get_frame_resolution()
+        print("picture with custom resolution")
     except:
         frame, frame2 = camera.get_frame()
+        print("picture with standard resolution")
+
     # frame 2 is an image, frame is a jpeg stream in bytes
     return frame2
 
