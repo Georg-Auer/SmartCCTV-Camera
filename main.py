@@ -124,6 +124,11 @@ def automatic_stop():
     print(scheduler.get_jobs())
     return ("nothing")
 
+@app.route('/picture')
+def picture(pos_name = "custom"):
+    picture_task(pos_name)
+    return ("nothing")
+
 @app.route('/settings')
 def automatic():
     print("settings")
