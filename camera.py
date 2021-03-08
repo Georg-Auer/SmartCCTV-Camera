@@ -15,7 +15,7 @@ class VideoCamera(object):
         try:
             # try raspberry camera first
             try:
-                self.vs = PiVideoStream(resolution=(640, 640)).start()
+                self.vs = PiVideoStream(resolution=(320, 240)).start()
                 print("started with custom resolution")
             except:
                 self.vs = PiVideoStream().start()
