@@ -150,11 +150,14 @@ def gen(camera):
 
 def gen_frame(camera):
     try:
+        object_methods = [method_name for method_name in dir(camera)
+                  if callable(getattr(camera, method_name))]
+        print(object_methods)
         frame, frame2 = camera.get_frame_resolution()
         print("picture with custom resolution")
     except:
         frame, frame2 = camera.get_frame()
-        print("picture with standard resolution")
+        print("picture with standard resolution, custom did not work")
 
     # frame 2 is an image, frame is a jpeg stream in bytes
     return frame2

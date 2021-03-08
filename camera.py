@@ -52,8 +52,11 @@ class VideoCamera(object):
         return jpeg.tobytes(), frame
 
     def get_frame_resolution(self):
+        object_methods = [method_name for method_name in dir(self.resolution)
+                  if callable(getattr(self.resolution, method_name))]
+        print(object_methods)
         print(f"previously set resolution: {self.vs.resolution}")
-        self.vs.resolution = (1280, 720)
+        self.vs.VideoCapture().resolution = (1280, 720)
         print(f"previously set resolution: {self.vs.resolution}")
         try:
             frame = self.flip_if_needed(self.vs.read())
