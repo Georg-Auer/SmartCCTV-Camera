@@ -14,10 +14,12 @@ class VideoCamera(object):
     def __init__(self, flip = False):
         try:
             try:
-                self.vs = PiVideoStream(resolution=(320, 240)).start()
+                self.vs = PiVideoStream(resolution=(640, 640)).start()
                 print("started with custom resolution")
             except:
                 self.vs = PiVideoStream().start()
+                print("started with standard resolution")
+
             #resolution=(320, 240)
         except:
             # start webcam for testing
