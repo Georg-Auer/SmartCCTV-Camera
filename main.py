@@ -15,6 +15,8 @@ from pyserial_connection_arduino import connect_to_arduino, list_available_ports
 import numpy as np
 from flask_apscheduler import APScheduler
 import cv2
+from datetime import datetime, timedelta
+# https://stackoverflow.com/questions/6871016/adding-days-to-a-date-in-python
 class Config(object):
     SCHEDULER_API_ENABLED = True
 
@@ -67,9 +69,6 @@ def move_deg():
     motor_position(degree)
     return '''<h1>Moving to: {}</h1>'''.format(degree)
     # return ("nothing")
-
-from datetime import datetime, timedelta
-# https://stackoverflow.com/questions/6871016/adding-days-to-a-date-in-python
 
 @app.route('/automatic_start')
 def run_tasks():
