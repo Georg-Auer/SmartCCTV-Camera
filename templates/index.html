@@ -119,7 +119,44 @@ body {
 
 </style>
 </head>
-
+<!-- toggle switch -->
+<html>
+  <body>
+    <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+      <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+      <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    </head>
+    <!-- this makes round buttons -->
+    <style>
+      .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px; }
+      .toggle.ios .toggle-handle { border-radius: 20px; }
+    </style>
+    <input type="checkbox" class='toggle' checked data-toggle="toggle" data-onstyle="success" data-style="ios">
+    <div class='status'>Automatic Off</div>
+  </body>
+  <script>
+  $(document).ready(function() {
+    $('.toggle').click(function() {
+    var current_status = $('.status').text();
+    $.ajax({
+      url: "/get_toggled_status",
+      type: "get",
+      data: {status: current_status},
+      success: function(response) {
+        $(".status").html(response);
+      },
+      error: function(xhr) {
+        //Do Something to handle error
+      }
+    });
+    });
+  });
+ </script>
+</html>
+<!-- end of toggle -->
 <title>Smart CAM² - SPOC lab</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

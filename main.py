@@ -112,6 +112,36 @@ def picture_task(task_position):
     # writing image
     cv2.imwrite(filename, frame)
 
+@app.route('/get_toggled_status') 
+def toggled_status():
+    current_status = request.args.get('status')
+    if(current_status == 'Automatic On'):
+        print("Switching On")
+
+        schedule_start = datetime.today()
+        print(f"starting scheduling {schedule_start}")
+        moving_time = 10
+        task_seperation_increase = moving_time*2
+        task_seperation = 1
+        for i in range(0, 360, 90): # starting angle, stop angle and step angle in degrees
+            schedule_time_movement = schedule_start + timedelta(seconds=task_seperation)
+            schedule_time_picture = schedule_start + timedelta(seconds=moving_time+task_seperation)
+            scheduler.add_job(func=motor_task_creator, trigger='date', run_date=schedule_time_movement, args=[i], id='move_start'+str(i))
+            print(f"created moving job {i} running at {schedule_time_movement}")
+            scheduler.add_job(func=picture_task_creator, trigger='date', run_date=schedule_time_picture, args=[i], id='picture_start'+str(i))
+            print(f"created picture job {i} running at {schedule_time_picture}")
+            task_seperation = task_seperation + task_seperation_increase
+        print(scheduler.get_jobs())
+
+    else:
+        print("Switching Off")
+        print(scheduler.get_jobs())
+        print("Removing all scheduled jobs")
+        # scheduler.remove_job(j0)
+        scheduler.remove_all_jobs()
+        print(scheduler.get_jobs())
+    return 'Automatic On' if current_status == 'Automatic Off' else 'Automatic Off'
+
 @app.route('/automatic_stop')
 def automatic_stop():
     # https://github.com/viniciuschiele/flask-apscheduler
