@@ -66,7 +66,7 @@ def list_available_ports():
     return ports
 
 if __name__ == "__main__":
-    # list_available_ports()
+    list_available_ports()
     comport = '/dev/ttyACM0'
     # enable = 0, disable = 1
     motor0_enable = 0
