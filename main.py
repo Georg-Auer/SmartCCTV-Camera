@@ -70,23 +70,24 @@ def move_deg():
     return '''<h1>Moving to: {}</h1>'''.format(degree)
     # return ("nothing")
 
-@app.route('/automatic_start')
-def run_tasks():
-    schedule_start = datetime.today()
-    print(f"starting scheduling {schedule_start}")
-    moving_time = 10
-    task_seperation_increase = moving_time*2
-    task_seperation = 1
-    for i in range(0, 90, 90): # starting angle, stop angle and step angle in degrees
-        schedule_time_movement = schedule_start + timedelta(seconds=task_seperation)
-        schedule_time_picture = schedule_start + timedelta(seconds=moving_time+task_seperation)
-        scheduler.add_job(func=motor_task_creator, trigger='date', run_date=schedule_time_movement, args=[i], id='move_start'+str(i))
-        print(f"created moving job {i} running at {schedule_time_movement}")
-        scheduler.add_job(func=picture_task_creator, trigger='date', run_date=schedule_time_picture, args=[i], id='picture_start'+str(i))
-        print(f"created picture job {i} running at {schedule_time_picture}")
-        task_seperation = task_seperation + task_seperation_increase
-    print(scheduler.get_jobs())
-    return 'Scheduled several long running tasks.', 200
+# @app.route('/automatic_start')
+# def run_tasks():
+#     schedule_start = datetime.today()
+#     print(f"starting scheduling {schedule_start}")
+#     moving_time = 10
+#     print(f"moving time is assumed {moving_time} seconds")
+#     task_seperation_increase = moving_time*2
+#     task_seperation = 1
+#     for i in range(0, 180, 45): # starting angle, stop angle and step angle in degrees
+#         schedule_time_movement = schedule_start + timedelta(seconds=task_seperation)
+#         schedule_time_picture = schedule_start + timedelta(seconds=moving_time+task_seperation)
+#         scheduler.add_job(func=motor_task_creator, trigger='date', run_date=schedule_time_movement, args=[i], id='move_start'+str(i))
+#         print(f"created moving job {i} running at {schedule_time_movement}")
+#         scheduler.add_job(func=picture_task_creator, trigger='date', run_date=schedule_time_picture, args=[i], id='picture_start'+str(i))
+#         print(f"created picture job {i} running at {schedule_time_picture}")
+#         task_seperation = task_seperation + task_seperation_increase
+#     print(scheduler.get_jobs())
+#     return 'Scheduled several long running tasks.', 200
 
 def motor_task_creator(task_id):
     print(f"start of motor task creator {task_id}")
@@ -115,15 +116,27 @@ def picture_task(task_position):
 @app.route('/get_toggled_status') 
 def toggled_status():
     current_status = request.args.get('status')
-    if(current_status == 'Automatic On'):
-        print("Switching On")
+    # instead of if, create a list, send list and do for items in list
+    # this way, only in activated positions are scheduled
+    if(scheduler.get_jobs()):
+        print(bool(scheduler.get_jobs()))
+        print("jobs scheduled")
+        # current_status = 'Automatic On'
+    else:
+        print(bool(scheduler.get_jobs()))
+        print("no jobs scheduled")
+    #     current_status = 'Automatic On'
 
+    # if Automatic On was sent and no jobs are scheduled
+    if(current_status == 'Automatic Off') and not(scheduler.get_jobs()):
+        print("Switching On")
         schedule_start = datetime.today()
         print(f"starting scheduling {schedule_start}")
         moving_time = 10
+        print(f"moving time is assumed {moving_time} seconds") 
         task_seperation_increase = moving_time*2
         task_seperation = 1
-        for i in range(0, 360, 90): # starting angle, stop angle and step angle in degrees
+        for i in range(0, 180, 90): # starting angle, stop angle and step angle in degrees
             schedule_time_movement = schedule_start + timedelta(seconds=task_seperation)
             schedule_time_picture = schedule_start + timedelta(seconds=moving_time+task_seperation)
             scheduler.add_job(func=motor_task_creator, trigger='date', run_date=schedule_time_movement, args=[i], id='move_start'+str(i))
@@ -140,6 +153,7 @@ def toggled_status():
         # scheduler.remove_job(j0)
         scheduler.remove_all_jobs()
         print(scheduler.get_jobs())
+
     return 'Automatic On' if current_status == 'Automatic Off' else 'Automatic Off'
 
 @app.route('/automatic_stop')
