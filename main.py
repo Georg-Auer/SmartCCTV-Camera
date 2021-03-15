@@ -70,25 +70,6 @@ def move_deg():
     return '''<h1>Moving to: {}</h1>'''.format(degree)
     # return ("nothing")
 
-# @app.route('/automatic_start')
-# def run_tasks():
-#     schedule_start = datetime.today()
-#     print(f"starting scheduling {schedule_start}")
-#     moving_time = 10
-#     print(f"moving time is assumed {moving_time} seconds")
-#     task_seperation_increase = moving_time*2
-#     task_seperation = 1
-#     for i in range(0, 180, 45): # starting angle, stop angle and step angle in degrees
-#         schedule_time_movement = schedule_start + timedelta(seconds=task_seperation)
-#         schedule_time_picture = schedule_start + timedelta(seconds=moving_time+task_seperation)
-#         scheduler.add_job(func=motor_task_creator, trigger='date', run_date=schedule_time_movement, args=[i], id='move_start'+str(i))
-#         print(f"created moving job {i} running at {schedule_time_movement}")
-#         scheduler.add_job(func=picture_task_creator, trigger='date', run_date=schedule_time_picture, args=[i], id='picture_start'+str(i))
-#         print(f"created picture job {i} running at {schedule_time_picture}")
-#         task_seperation = task_seperation + task_seperation_increase
-#     print(scheduler.get_jobs())
-#     return 'Scheduled several long running tasks.', 200
-
 def motor_task_creator(task_id):
     print(f"start of motor task creator {task_id}")
     # creating motor task that runs every minute
@@ -211,6 +192,73 @@ def video_feed():
     global_video_cam = VideoCamera()
     return Response(gen(global_video_cam),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+# gallery-------------------------------
+
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
+@app.route("/gallery")
+def gallery():
+    images = os.listdir('./images')
+    return render_template("index_gallery.html", images=images)
+
+def allowed_file(filename):
+    return '.' in filename and \
+            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route("/upload", methods=["GET","POST"])
+def upload_file():
+    if request.method=="GET":
+        return render_template('upload.html')
+    target = os.path.join(APP_ROOT, 'images/')
+    print(target)
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    for file in request.files.getlist("file"):
+        print(file)
+        filename = file.filename
+        destination = "/".join([target, filename])
+        print(destination)
+        file.save(destination)
+    return render_template("uploaded.html")
+
+@app.route('/upload/<filename>')
+def send_image(filename):
+    return send_from_directory("images", filename)
+
+def send_image_for_filter(image):
+    return render_template('filter.html', image=image)
+
+@app.route("/filters")
+def filter():
+    return render_template('filters.html')
+
+@app.url_defaults
+def hashed_url_for_static_file(endpoint, values):
+    if 'static' == endpoint or endpoint.endswith('.static'):
+        filename = values.get('filename')
+        if filename:
+            if '.' in endpoint:  # has higher priority
+                blueprint = endpoint.rsplit('.', 1)[0]
+            else:
+                blueprint = request.blueprint  # can be None too
+            if blueprint:
+                static_folder = app.blueprints[blueprint].static_folder
+            else:
+                static_folder = app.static_folder
+            param_name = 'h'
+            while param_name in values:
+                param_name = '_' + param_name
+            values[param_name] = static_file_hash(os.path.join(static_folder, filename))
+
+def static_file_hash(filename):
+    return int(os.stat(filename).st_mtime)
+
+# if __name__ == "__main__":
+#     app.run(port=5000)
+# gallery-------------------------------
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True, threaded=True)
