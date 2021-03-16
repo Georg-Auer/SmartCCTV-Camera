@@ -256,10 +256,7 @@ def hashed_url_for_static_file(endpoint, values):
 def static_file_hash(filename):
     return int(os.stat(filename).st_mtime)
 
-# if __name__ == "__main__":
-#     app.run(port=5000)
-# gallery-------------------------------
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True, threaded=True)
     #app.run(host='0.0.0.0', debug=True, threaded=True)
+    # app.run(port=5000)
