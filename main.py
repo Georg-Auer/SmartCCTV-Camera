@@ -8,6 +8,10 @@
 # how to handle querys:
 # https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
 from flask import Flask, render_template, Response, request
+# for gallery:
+from flask import send_from_directory
+from flask import redirect
+
 from camera import VideoCamera
 import time
 import os
@@ -65,6 +69,8 @@ def move_deg():
     degree = int(request.args.get('degree'))
     if(degree >= 280):
         degree = 270
+    if(degree <= -30):
+        degree = -30
     print(f"Moving to {degree}°")
     motor_position(degree)
     return '''<h1>Moving to: {}</h1>'''.format(degree)
@@ -202,7 +208,17 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 @app.route("/gallery")
 def gallery():
     images = os.listdir('./images')
-    return render_template("index_gallery.html", images=images)
+    return render_template("index-gallery.html", images=images)
+
+# https://stackoverflow.com/questions/27539309/how-do-i-create-a-link-to-another-html-page/27540234
+# @app.route('/gallery', methods=['GET', 'POST'])
+# def gallery():
+#     images = os.listdir('./images')
+#     if request.method == 'POST':
+#         # return render_template("index-gallery.html", images=images)
+
+#         return redirect(url_for('index-gallery'))
+#     return redirect("index-gallery.html")
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -255,6 +271,8 @@ def hashed_url_for_static_file(endpoint, values):
 
 def static_file_hash(filename):
     return int(os.stat(filename).st_mtime)
+
+# gallery-------------------------------
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True, threaded=True)

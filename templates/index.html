@@ -183,9 +183,14 @@ body {
                 <i class="fa fa-shield fa-rotate-270 fa" style="color: white" aria-hidden="true" ></i>
           </button>
         </a>
+        <a href=# id=href_gallery>
+          <button>                  
+                <i class="fa fa-object-group fa" style="color: white" aria-hidden="true" ></i>
+          </button>
+        </a>
         <a href=# id=picture>
           <button>                  
-                <i class=" fa-camera fa" style="color: rgb(28, 168, 28)" aria-hidden="true" ></i>
+                <i class="fa-camera fa" style="color: rgb(28, 168, 28)" aria-hidden="true" ></i>
           </button>
         </a>
           <!-- this makes round buttons -->
@@ -270,6 +275,15 @@ body {
     // - Motor - 270°
     $('a#href_270').bind('click', function() {
       $.getJSON('/move_deg?degree=270',
+          function(data) {
+        //do nothing
+      });
+      return false;
+    });
+
+    // - Gallery
+    $('a#href_gallery').bind('click', function() {
+      $.getJSON('/gallery',
           function(data) {
         //do nothing
       });
