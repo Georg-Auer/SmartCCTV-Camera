@@ -212,16 +212,6 @@ def gallery():
     images = os.listdir('./images')
     return render_template("index-gallery.html", images=images)
 
-# https://stackoverflow.com/questions/27539309/how-do-i-create-a-link-to-another-html-page/27540234
-# @app.route('/gallery', methods=['GET', 'POST'])
-# def gallery():
-#     images = os.listdir('./images')
-#     if request.method == 'POST':
-#         # return render_template("index-gallery.html", images=images)
-
-#         return redirect(url_for('index-gallery'))
-#     return redirect("index-gallery.html")
-
 def allowed_file(filename):
     return '.' in filename and \
             filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
