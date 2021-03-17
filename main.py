@@ -95,7 +95,7 @@ def motor_task(task_id):
 def picture_task(task_position):
     print(f"start of picture task {task_position}")
     filename = f'position{task_position}_{datetime.now().strftime("%Y%m%d-%H%M%S")}.jpg'
-    foldername = 'images\\'
+    foldername = 'images\'
     filename = foldername+filename
     print(filename)
     frame = gen_frame(global_video_cam)
