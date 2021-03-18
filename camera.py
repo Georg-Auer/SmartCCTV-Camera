@@ -13,13 +13,16 @@ import numpy as np
 class VideoCamera(object):
     def __init__(self, flip = False):
         try:
+            self.vs = PiVideoStream().start()
+            print(f"using standard resolution, not changed back: {self.vs.resolution}")
+            
             # try raspberry camera first
-            try:
-                self.vs = PiVideoStream(resolution=(320, 240)).start()
-                print("started with custom resolution")
-            except:
-                self.vs = PiVideoStream().start()
-                print("started with standard resolution")
+            # try:
+            #     self.vs = PiVideoStream(resolution=(320, 240)).start()
+            #     print("started with custom resolution")
+            # except:
+            #     self.vs = PiVideoStream().start()
+            #     print("started with standard resolution")
             #resolution=(640, 480)
             #resolution=(320, 240)
         except:
