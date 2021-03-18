@@ -182,10 +182,12 @@ def gen(camera):
 
 def gen_frame(camera):
     try:
-        object_methods = [method_name for method_name in dir(camera.__init__)
+        object_methods = [method_name for method_name in dir(camera)
                   if callable(getattr(camera, method_name))]
         print(object_methods)
-        frame, frame2 = camera.get_frame_resolution()
+        frame, frame2 = camera.get_frame()
+
+        # frame, frame2 = camera.get_frame_resolution()
         print("picture with custom resolution")
     except:
         frame, frame2 = camera.get_frame()
