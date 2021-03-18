@@ -182,7 +182,7 @@ def gen(camera):
 
 def gen_frame(camera):
     try:
-        object_methods = [method_name for method_name in dir(camera)
+        object_methods = [method_name for method_name in dir(camera.__init__)
                   if callable(getattr(camera, method_name))]
         print(object_methods)
         frame, frame2 = camera.get_frame_resolution()
