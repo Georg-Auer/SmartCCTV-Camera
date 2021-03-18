@@ -58,6 +58,8 @@ class VideoCamera(object):
         print(f"previously set resolution: {self.vs.resolution}")
         try:
             self.vs.VideoCapture().resolution = (320, 240)
+        except:
+            print(f"using standard resolution: {self.vs.resolution}")
         print(f"previously set resolution: {self.vs.resolution}")
         try:
             frame = self.flip_if_needed(self.vs.read())
@@ -69,6 +71,8 @@ class VideoCamera(object):
         # set resolution back to last value
         try:
             self.vs.resolution = (320, 240)
+        except:
+            print(f"using standard resolution, not changed back: {self.vs.resolution}")
         # 640, 480
         # 1280, 720
         #resolution=(320, 240)
