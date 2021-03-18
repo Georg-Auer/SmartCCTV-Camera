@@ -1,4 +1,9 @@
-# SmartCCTV Camera - Build with a Raspberry Pi
+# SPOC webcam
+
+How to make the script run on startup:
+sudo nano /etc/rc.local
+insert:
+sudo python3 /home/pi/sample.py & > /home/pi/Desktop/log.txt 2>&1
 
 Build your own home Raspberry Pi powered surveillance iOT camera with Face recognition, access your live feed for any device. project by [SmartBuilds.io](http:smartbuilds.io)
 

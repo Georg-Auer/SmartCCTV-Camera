@@ -14,7 +14,7 @@ class VideoCamera(object):
     def __init__(self, flip = False):
         try:
             self.vs = PiVideoStream().start()
-            print(f"using standard resolution, not changed back: {self.vs.resolution}")
+            print(f"using raspberry camera with standard resolution, not changed back: {self.vs.resolution}")
             
             # try raspberry camera first
             # try:
@@ -28,6 +28,8 @@ class VideoCamera(object):
         except:
             # start webcam for testing instead
             self.vs = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+            print(f"using standard resolution with webcam: {self.vs.resolution}")
+
             #0 is the standard number of the connected camera in windows
         self.flip = flip
         time.sleep(1.0)
@@ -46,9 +48,11 @@ class VideoCamera(object):
     def get_frame(self):
         try:
             frame = self.flip_if_needed(self.vs.read())
+            print("flipped?")
             ret, jpeg = cv2.imencode('.jpg', frame)
         except:
             ret, frame = self.vs.read()
+            print("no flip")
             ret, jpeg = cv2.imencode('.jpg', frame)
 
         # now returns a simple frame additionally
