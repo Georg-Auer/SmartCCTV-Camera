@@ -194,7 +194,7 @@ def gen_frame(camera):
         print("picture with standard resolution, custom did not work")
 
     # frame 2 is an image, frame is a jpeg stream in bytes
-    return frame2
+    return frame
 
 @app.route('/video_feed')
 def video_feed():
