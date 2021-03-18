@@ -50,11 +50,11 @@ class VideoCamera(object):
     def get_frame(self):
         try:
             frame = self.flip_if_needed(self.vs.read())
-            print("flipped?")
+            # print("flipped?")
             ret, jpeg = cv2.imencode('.jpg', frame)
         except:
             ret, frame = self.vs.read()
-            print("no flip")
+            # print("no flip")
             ret, jpeg = cv2.imencode('.jpg', frame)
 
         # now returns a simple frame additionally
