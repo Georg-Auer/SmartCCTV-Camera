@@ -15,12 +15,12 @@ class VideoCamera(object):
         try:
             # try raspberry camera first
             try:
-                self.vs = PiVideoStream(resolution=(640, 480)).start()
+                self.vs = PiVideoStream(resolution=(320, 240)).start()
                 print("started with custom resolution")
             except:
                 self.vs = PiVideoStream().start()
                 print("started with standard resolution")
-
+            #resolution=(640, 480)
             #resolution=(320, 240)
         except:
             # start webcam for testing instead
@@ -64,7 +64,10 @@ class VideoCamera(object):
         except:
             ret, frame = self.vs.read()
             ret, jpeg = cv2.imencode('.jpg', frame)
-        self.vs.resolution = (1280, 720)
+        self.vs.resolution = (320, 240)
+        # 640, 480
+        # 1280, 720
+        #resolution=(320, 240)
         # now returns a simple frame additionally
         return jpeg.tobytes(), frame
 
