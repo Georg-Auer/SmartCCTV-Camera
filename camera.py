@@ -56,7 +56,7 @@ class VideoCamera(object):
                   if callable(getattr(self.resolution, method_name))]
         print(object_methods)
         print(f"previously set resolution: {self.vs.resolution}")
-        self.vs.VideoCapture().resolution = (1280, 720)
+        self.vs.VideoCapture().resolution = ((320, 240)
         print(f"previously set resolution: {self.vs.resolution}")
         try:
             frame = self.flip_if_needed(self.vs.read())
