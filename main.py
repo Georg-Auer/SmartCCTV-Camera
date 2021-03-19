@@ -175,33 +175,32 @@ def move():
 
 def gen(camera):
     while True:
-        frame, frame2 = camera.get_frame()
+        fram = camera.get_frame()
         # this is executed every frame
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-def gen_frame(camera):
-    try:
-        object_methods = [method_name for method_name in dir(camera)
-                  if callable(getattr(camera, method_name))]
-        print(object_methods)
-        frame, frame2 = camera.get_frame()
+# def gen_frame(camera):
+#     try:
+#         object_methods = [method_name for method_name in dir(camera)
+#                   if callable(getattr(camera, method_name))]
+#         print(object_methods)
+#         frame = camera.get_frame()
 
-        # frame, frame2 = camera.get_frame_resolution()
-        print("picture with custom resolution")
-    except:
-        frame, frame2 = camera.get_frame()
-        print("picture with standard resolution, custom did not work")
+#         # frame, frame2 = camera.get_frame_resolution()
+#         print("picture with custom resolution")
+#     except:
+#         frame = camera.get_frame()
+#         print("picture with standard resolution, custom did not work")
 
-    # frame 2 is an image, frame is a jpeg stream in bytes
-    return frame
+#     # frame 2 is an image, frame is a jpeg stream in bytes
+#     return frame
 
 @app.route('/video_feed')
 def video_feed():
     global global_video_cam
     global_video_cam = VideoCamera()
-    return Response(gen(global_video_cam),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen(global_video_cam), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # gallery-------------------------------
 

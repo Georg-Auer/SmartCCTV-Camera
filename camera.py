@@ -58,7 +58,12 @@ class VideoCamera(object):
             ret, jpeg = cv2.imencode('.jpg', frame)
 
         # now returns a simple frame additionally
-        return jpeg.tobytes(), frame
+        return jpeg.tobytes()
+
+    # def get_frame(self):
+    #     frame = self.flip_if_needed(self.vs.read())
+    #     ret, jpeg = cv2.imencode('.jpg', frame)
+    #     return jpeg.tobytes()
 
     def get_frame_resolution(self):
         object_methods = [method_name for method_name in dir(self.resolution)
