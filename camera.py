@@ -14,7 +14,7 @@ class VideoCamera(object):
     def __init__(self, flip = False):
         try:
             self.vs = PiVideoStream().start()
-            print(f"using raspberry camera with standard resolution, not changed back")
+            print(f"using raspberry camera with standard resolution, not changed")
             
 # {self.vs.resolution}
 
@@ -34,7 +34,7 @@ class VideoCamera(object):
 
             #0 is the standard number of the connected camera in windows
         self.flip = flip
-        time.sleep(1.0)
+        time.sleep(2.0)
 
     def __del__(self):
         try:
