@@ -1,4 +1,10 @@
 # SPOC lab CAM²: hetcam-webcam
+
+# How to make the script run on startup:
+# sudo nano /etc/rc.local
+# insert:
+# sudo python3 /home/pi/sample.py & > /home/pi/Desktop/log.txt 2>&1
+
 # icons from:
 # https://fontawesome.com/v4.7.0/examples/
 # how to schedule:
