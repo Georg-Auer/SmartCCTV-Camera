@@ -104,9 +104,9 @@ def picture_task(task_position):
     # foldername = 'images\'
     # filename = foldername+filename
     print(filename)
-    frame_bytes, frame = global_video_cam.get_frame()
+    # frame_bytes, frame = global_video_cam.get_frame()
     # writing image
-    cv2.imwrite(filename, frame)
+    cv2.imwrite(filename, global_video_frame)
 
 @app.route('/get_toggled_status') 
 def toggled_status():
@@ -179,9 +179,13 @@ def move():
         return render_template('index.html', res_str=result)
     return render_template('index.html')
 
+
+
 def gen(camera):
     while True:
         frame_bytes, frame = camera.get_frame()
+        global global_video_frame
+        global_video_frame = frame
         # this is executed every frame
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n\r\n')
@@ -204,9 +208,9 @@ def gen(camera):
 
 @app.route('/video_feed')
 def video_feed():
-    global global_video_cam
-    global_video_cam = VideoCamera()
-    return Response(gen(global_video_cam), mimetype='multipart/x-mixed-replace; boundary=frame')
+    # global global_video_cam
+    # global_video_cam = VideoCamera()
+    return Response(gen(VideoCamera()), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # gallery-------------------------------
 
