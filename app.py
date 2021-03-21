@@ -11,7 +11,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 @app.route("/")
 def index():
     images = os.listdir('./images')
-    return render_template("index_gallery.html", images=images)
+    return render_template("index-gallery.html", images=images)
 
 def allowed_file(filename):
     return '.' in filename and \
