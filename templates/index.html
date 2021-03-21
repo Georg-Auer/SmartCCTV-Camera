@@ -1,247 +1,67 @@
-<!DOCTYPE html>
 <html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-/* https://fontawesome.com/v4.7.0/cheatsheet/ */
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-}
+  <head>
+    <title>SPOC hetcam Video Stream</title>
+  </head>
 
-.navbar {
-  overflow: hidden;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  margin: auto;
-  background-color: black;
-  opacity:0.6;
-}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
 
-.navbar a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px; 
-}
+  <body>
+    <h1>SPOC hetcam Video Stream</h1>
+    <img src="{{ url_for('video_feed') }}">
 
-.navbar a:hover {
+    <div class="navbar">
+    
+      <form method = "post">
+        <div class="camera-movement">
+          <a href=# id=href_0>
+          <button>                   
+            <i class="fa fa-shield fa" style="color: white" aria-hidden="true"></i>
+          </button>
+          </a>
+          <a href=# id=href_90>
+            <button>                   
+              <i class="fa fa-shield fa-rotate-90 fa" style="color: white" aria-hidden="true"></i>
+            </button>
+          </a>
+          <a href=# id=href_180>
+            <button>                  
+              <i class="fa fa-shield fa-rotate-180 fa" style="color: white" aria-hidden="true" ></i>
+            </button>
+          </a>
+          <a href=# id=href_270>
+            <button>                  
+              <i class="fa fa-shield fa-rotate-270 fa" style="color: white" aria-hidden="true" ></i>
+            </button>
+          </a>
+          <a>
+            <button> 
+              <a class="fa fa-files-o" style="color: rgb(28, 168, 28);" href="/gallery" aria-hidden="true" ></a>
+            </button>
+          </a>
+          <a href=# id=picture>
+            <button>                  
+              <i class="fa-camera fa" style="color: rgb(28, 168, 28)" aria-hidden="true" ></i>
+            </button>
+          </a>
+            <!-- this makes round buttons -->
+          <!-- <a href=# id=toggle-switch>
+            <style>
+              .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px; }
+              .toggle.ios .toggle-handle { border-radius: 20px; }
+            </style>
+            <input type="checkbox" class='toggle' checked data-toggle="toggle" data-onstyle="success" data-style="ios">
+          </a> -->
+          
+        </div>
 
-}
-
-.navbar a.active {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.main {
-  padding: 16px;
-  margin-bottom: 30px;
-}
-
-.camera-movement{ 
-  float: none;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-/* .settings-button{
-	float: right;
-} */
-
-i.fa {
-  display: inline-block;
-  border-radius: 60px;
-  box-shadow: 0px 0px 2px #888;
-  padding: 0.5em 0.6em;
-  
-
-}
-
-img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 35%
-}
-
-button {
-    background-color: Transparent;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-}
-	
-//CSS
-.camera-bg {
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-
-  /* Preserve aspet ratio */
-  min-width: 100%;
-  min-height: 100%;
-
-    /* Full height */
-  height: 100%;
-
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.top-right-logo {
-  position: absolute;
-  top: 3%;
-  left: 2%;
-  font-size: 38px;
-  color: white;
-  opacity: 0.5;
-}
-
-.automatic-info {
-  position: absolute;
-  top: 3%;
-  left: 50%;
-  font-size: 20px;
-  color: white;
-  opacity: 0.5;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background-color: black;
-}
-
-</style>
-</head>
-
-<title>Smart CAM² - SPOC lab</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<body>
-
-<div class="main" id="newpost">
-  <img  class="camera-bg" style="width: 100%; height:80%; background-attachment: fixed;" id="bg" class="center" src="{{ url_for('video_feed') }}">
-  <!--<img  class="camera-bg" style="width: 100%; height:80%; background-attachment: fixed;" id="bg" class="center" src="https://www.psdbox.com/wp-content/uploads/2011/01/security-camera-photoshop-effect.jpg">-->
-     
-</div>
-
-<div class="top-right-logo">
-  <a>Smart CAM² - SPOC lab</a>
-</div>
-
-
-<div class="automatic-info">
-  <div class='status'>Automatic On</div>
-</div>
-
-
-
-<div class="navbar">
-
-  <div class="ignoreCall">
-    <a id=decline class="but_def">
-      <button id="button"> 
-          <i style="background: red; color: white;" class="fa fa-times fa" aria-hidden="true"></i>
-      </button>
-    </a>       
-  </div>
-
-  <form method = "post">
-    <div class="camera-movement">
-      <a href=# id=href_0>
-      <button>                   
-        <i class="fa fa-shield fa" style="color: white" aria-hidden="true"></i>
-      </button>
-      </a>
-      <a href=# id=href_90>
-        <button>                   
-          <i class="fa fa-shield fa-rotate-90 fa" style="color: white" aria-hidden="true"></i>
-        </button>
-      </a>
-      <a href=# id=href_180>
-        <button>                  
-          <i class="fa fa-shield fa-rotate-180 fa" style="color: white" aria-hidden="true" ></i>
-        </button>
-      </a>
-      <a href=# id=href_270>
-        <button>                  
-          <i class="fa fa-shield fa-rotate-270 fa" style="color: white" aria-hidden="true" ></i>
-        </button>
-      </a>
-      <a>
-        <button> 
-          <a class="fa fa-files-o" style="color: rgb(28, 168, 28);" href="/gallery" aria-hidden="true" ></a>
-        </button>
-      </a>
-      <a href=# id=picture>
-        <button>                  
-          <i class="fa-camera fa" style="color: rgb(28, 168, 28)" aria-hidden="true" ></i>
-        </button>
-      </a>
-        <!-- this makes round buttons -->
-      <!-- <a href=# id=toggle-switch>
-        <style>
-          .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px; }
-          .toggle.ios .toggle-handle { border-radius: 20px; }
-        </style>
-        <input type="checkbox" class='toggle' checked data-toggle="toggle" data-onstyle="success" data-style="ios">
-      </a> -->
-      
+      </form>
+    
     </div>
 
-      <!-- <div class="settings">
-        <a href=# id=center>
-          <button>                   
-                <i class="fa fa-gears fa" style="color: white" aria-hidden="true"></i>
-          </button>
-        </a>
-      </div> -->
-  </form>
-
-</div>
-
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
-<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
-<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
-<!-- <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-
-<script>
-  $(document).ready(function() {
-    $('.toggle').click(function() {
-    var current_status = $('.status').text();
-    $.ajax({
-      url: "/get_toggled_status",
-      type: "get",
-      data: {status: current_status},
-      success: function(response) {
-        $(".status").html(response);
-      },
-      error: function(xhr) {
-        //Do Something to handle error
-      }
-    });
-    });
-  });
-</script> -->
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type=text/javascript>
+  <!-- some javascript -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type=text/javascript>
   $(function() {
     
     //json - parse to Python
@@ -262,7 +82,7 @@ body {
       });
       return false;
     });
-  
+
     // - Motor - 180°
     $('a#href_180').bind('click', function() {
       $.getJSON('/move_deg?degree=180',
@@ -271,7 +91,7 @@ body {
       });
       return false;
     });
-  
+
     // - Motor - 270°
     $('a#href_270').bind('click', function() {
       $.getJSON('/move_deg?degree=270',
@@ -290,15 +110,6 @@ body {
       return false;
     });
 
-    // // - settings
-    // $('a#settings').bind('click', function() {
-    //   $.getJSON('/settings',
-    //       function(data) {
-    //     //do nothing
-    //   });
-    //   return false;
-    // });
-
     // - picture
     $('a#picture').bind('click', function() {
       $.getJSON('/picture',
@@ -308,9 +119,9 @@ body {
       return false;
     });
     
-  
+
   });    
-</script>
+  </script>
 
 <script type="text/javascript">
   
@@ -327,6 +138,6 @@ button.onclick = function() {
 };
 </script>
 
-</body>
+  
+  </body>
 </html>
-
